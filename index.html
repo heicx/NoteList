@@ -1,0 +1,37 @@
+<html>
+<head>
+	<title>Note List</title>
+	<link rel="stylesheet" type="text/css" href="resources/note.css">
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
+	<script type="text/javascript" src="bower_components/backbone/backbone.js"></script>
+	<script type="text/javascript" src="index.js"></script>
+</head>
+<body>
+	<header>
+		<h1>take notes</h1>
+		<input id="notes" type="text" placheholder="record something"></input>
+	</header>
+	<section id="content">
+		<input id="toggle-all" type="checkbox"></input>
+		<span id="toggle-desc">ckeck all</span>
+		<ul id="notes-list">
+
+		</ul>
+	</section>
+	<footer>
+		<div id="notes-count">
+			<b>0</b>
+			item
+		</div>
+	</footer>
+	<script type="text/template" id="item-template">
+    	<div class="view">
+	    	<input class="toggle" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+	     	<label><%- title %></label>
+	     	<a class="destroy"></a>
+    	</div>
+	    <input class="edit" type="text" value="<%- title %>" />
+  </script>
+</body>
+</html>
