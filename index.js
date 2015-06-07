@@ -74,5 +74,53 @@ $(function() {
 		}
 	});
 
-	var noteview = new NoteView;
+	var AppView = Backbone.View.extend({
+		el: $("#noteapp"),
+		statsTemplate: _.template($("#stats-template").html()),
+		events: {
+			"keypress #new-note": "createOnEnter",
+			"click #clear-completed": "clearCompleted",
+			"click #toggle-all": "toggleAllComplete"
+		},
+		initialize: function() {
+			console.log(this);
+			this.input = this.$("#new-note");
+			this.allCheckbox = this.$("toggle-all")[0];
+
+			this.listenTo(noteList, "add", this.addOne);
+			this.listenTo(noteList, "reset", this.addAll);
+			this.listenTo(noteList, "all", this.render);
+
+			this.footer = this.$("footer");
+			this.main = $("#main");
+
+			noteList.fetch();
+		},
+		addOne: function(note) {
+			var noteView = new NoteView({model: note});
+			this.$("#note-list").append(view.render().el);
+		},
+		addAll: function() {
+			noteList.each(this.addOne, this);
+		},
+		createOnEnter: function(e) {
+			if(e.keyCode != 13) return;
+			if(!this.input.val()) return;
+
+			noteList.create({title: this.input.val()});
+			this.input.val("");
+		},
+		clearCompleted: function() {
+			_.invoke(noteList.done(), "destroy");
+			return false;
+		},
+		toggleAllComplete: function() {
+			var done = this.allCheckbox.checked;
+			noteList.each(function(note) {
+				note.save({"done": done});
+			})
+		}
+	});
+
+	var note = new AppView();
 })
