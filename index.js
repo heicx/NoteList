@@ -1,5 +1,4 @@
 $(function() {
-
 	var Note = Backbone.Model.extend({
 		defaults: function() {
 			return {
@@ -37,8 +36,8 @@ $(function() {
 			"click .toogle"		: "toggleDone",
 			"dbClick .view"		: "edit",
 			"click a.destroy"	: "clear",
-	        "keypress .edit"  	: "updateOnEnter",
-	        "blur .edit"      	: "close"
+			"keypress .edit"  	: "updateOnEnter",
+			"blur .edit"      	: "close"
 		},
 		initialize: function() {
 			this.listenTo(this.model, "change", this.render);
@@ -46,11 +45,11 @@ $(function() {
 		},
 		render: function() {
 			this.$el.html(this.template(this.model.toJSON()));
-			this.$el.toogleDone("done", this.model.get("done"));
+			this.$el.toggleClass("done", this.model.get("done"));
 			this.input = $(".edit");
 			return this;
 		},
-		toogleDone: function() {
+		toggleDone: function() {
 			this.model.toggle();
 		},
 		edit: function() {
@@ -75,7 +74,7 @@ $(function() {
 	});
 
 	var AppView = Backbone.View.extend({
-		el: $("#noteapp"),
+		el: $("#noteApp"),
 		statsTemplate: _.template($("#stats-template").html()),
 		events: {
 			"keypress #new-note": "createOnEnter",
@@ -83,9 +82,8 @@ $(function() {
 			"click #toggle-all": "toggleAllComplete"
 		},
 		initialize: function() {
-			console.log(this);
 			this.input = this.$("#new-note");
-			this.allCheckbox = this.$("toggle-all")[0];
+			this.allCheckbox = this.$("#toggle-all")[0];
 
 			this.listenTo(noteList, "add", this.addOne);
 			this.listenTo(noteList, "reset", this.addAll);
@@ -96,9 +94,24 @@ $(function() {
 
 			noteList.fetch();
 		},
+		render: function() {
+			var done = noteList.done().length;
+			var remaining = noteList.remaining().length;
+
+			if (noteList.length) {
+				this.main.show();
+				this.footer.show();
+				this.footer.html(this.statsTemplate({done: done, remaining: remaining}));
+			} else {
+				this.main.hide();
+				this.footer.hide();
+			}
+
+			this.allCheckbox.checked = !remaining;
+		},
 		addOne: function(note) {
 			var noteView = new NoteView({model: note});
-			this.$("#note-list").append(view.render().el);
+			this.$("#note-list").append(noteView.render().el);
 		},
 		addAll: function() {
 			noteList.each(this.addOne, this);

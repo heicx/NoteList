@@ -1,7 +1,11 @@
 <html>
 <head>
 	<title>Note List</title>
-	<link rel="stylesheet" type="text/css" href="resources/note.css">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="telephone=no" name="format-detection">
+	<meta content="false" id="twcClient" name="twcClient">
+	<link rel="stylesheet" type="text/css" href="resouces/note.css">
 	<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
 	<script type="text/javascript" src="bower_components/backbone/backbone.js"></script>
@@ -9,13 +13,13 @@
 	<script type="text/javascript" src="index.js"></script>
 </head>
 <body>
-	<div id="noteApp">
+	<div id="noteApp" class="wrap">
 		<header>
-			<h1>take notes</h1>
-			<input id="new-note" type="text" placheholder="record something"></input>
+			<h1>note something</h1>
+			<input id="new-note" type="text" placeholder="record something" />
 		</header>
 		<section id="main">
-			<input id="toggle-all" type="checkbox"></input>
+			<input id="toggle-all" type="checkbox" />
 			<span id="toggle-desc">ckeck all</span>
 			<ul id="note-list">
 
